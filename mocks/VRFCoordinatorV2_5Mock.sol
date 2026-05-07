@@ -3,10 +3,10 @@
 pragma solidity ^0.8.19;
 
 // solhint-disable-next-line no-unused-import
-import {IVRFCoordinatorV2Plus, IVRFSubscriptionV2Plus} from "../../chainlink-evm/contracts/src/v0.8/vrf/dev/interfaces/IVRFCoordinatorV2Plus.sol";
-import {VRFV2PlusClient} from "../../chainlink-evm/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
+import {IVRFCoordinatorV2Plus, IVRFSubscriptionV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFCoordinatorV2Plus.sol";
+import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 import {SubscriptionAPI} from "./SubscriptionAPI.sol";
-import {VRFConsumerBaseV2Plus} from "../../chainlink-evm/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
+import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
 
 contract VRFCoordinatorV2_5Mock is SubscriptionAPI, IVRFCoordinatorV2Plus {
   uint96 public immutable i_base_fee;

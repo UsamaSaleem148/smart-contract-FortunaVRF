@@ -2,11 +2,11 @@
 pragma solidity ^0.8.4;
 
 import {EnumerableSet} from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
-import {LinkTokenInterface} from "../../chainlink-evm/contracts/src/v0.8/shared/interfaces/LinkTokenInterface.sol";
-import {ConfirmedOwner} from "../../chainlink-evm/contracts/src/v0.8/shared/access/ConfirmedOwner.sol";
-import {AggregatorV3Interface} from "../../chainlink-evm/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
-import {IERC677Receiver} from "../../chainlink-evm/contracts/src/v0.8/shared/interfaces/IERC677Receiver.sol";
-import {IVRFSubscriptionV2Plus} from "../../chainlink-evm/contracts/src/v0.8/vrf/dev/interfaces/IVRFSubscriptionV2Plus.sol";
+import {LinkTokenInterface} from "@chainlink/contracts/src/v0.8/shared/interfaces/LinkTokenInterface.sol";
+import {ConfirmedOwner} from "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol";
+import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import {IERC677Receiver} from "@chainlink/contracts/src/v0.8/shared/interfaces/IERC677Receiver.sol";
+import {IVRFSubscriptionV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFSubscriptionV2Plus.sol";
 
 abstract contract SubscriptionAPI is ConfirmedOwner, IERC677Receiver, IVRFSubscriptionV2Plus {
   using EnumerableSet for EnumerableSet.UintSet;

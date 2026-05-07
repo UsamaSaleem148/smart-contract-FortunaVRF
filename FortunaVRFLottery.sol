@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "../chainlink-evm/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
-import "../chainlink-evm/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol";
-import "../chainlink-evm/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
+import "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
+import "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol";
+import "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 
 /**
  * @title Fortuna VRF Lottery
@@ -24,6 +24,9 @@ contract FortunaVRFLottery is VRFConsumerBaseV2Plus {
 
     /// @notice Jackpot reserve accumulated from previous rounds.
     uint256 public jackpotReserve;
+
+    /// @notice Ticket proceeds collected for the current round (the only ETH eligible for splitting).
+    uint256 public prizePool;
 
     /// @notice Most recent winner.
     address public recentWinner;
@@ -99,6 +102,7 @@ contract FortunaVRFLottery is VRFConsumerBaseV2Plus {
         require(block.timestamp < roundEndTime, "Round ended");
 
         players.push(msg.sender);
+        prizePool += msg.value;
         emit PlayerEntered(msg.sender);
     }
 
@@ -146,9 +150,12 @@ contract FortunaVRFLottery is VRFConsumerBaseV2Plus {
         uint256 winnerIndex = randomWords[0] % players.length;
         recentWinner = players[winnerIndex];
 
-        uint256 prize = (address(this).balance * 80) / 100;
-        uint256 toJackpot = address(this).balance - prize;
+        uint256 currentPool = prizePool;
+        uint256 prize = (currentPool * 80) / 100;
+        uint256 toJackpot = currentPool - prize;
 
+        // Zero out before external call (checks-effects-interactions).
+        prizePool = 0;
         jackpotReserve += toJackpot;
 
         if (prize > 0) {
